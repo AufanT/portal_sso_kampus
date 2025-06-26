@@ -13,15 +13,12 @@ router.use(function(req, res, next) {
     next();
 });
 
-// Rute POST untuk mengunggah file
-// Middleware dijalankan berurutan: verifikasi token -> cek peran dosen -> baru proses upload
 router.post(
     "/upload", 
     [authenticate.verifyToken, authenticate.isDosen, upload.single('file')], 
     controller.uploadMateri
 );
 
-// Rute GET untuk melihat materi berdasarkan ID kelas
 router.get(
     "/materi/:classId", 
     [authenticate.verifyToken], 

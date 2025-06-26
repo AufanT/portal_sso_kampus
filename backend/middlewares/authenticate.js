@@ -54,14 +54,34 @@ const isMahasiswa = async (req, res, next) => {
 
         res.status(403).send({ message: 'Membutuhkan peran Mahasiswa!' });
     } catch (error) {
+        console.error("ERROR di middleware isMahasiswa:", error);
         res.status(500).send({ message: 'Terjadi kesalahan saat verifikasi peran Mahasiswa.' });
+    }
+};
+const getUserWithRole = async (req, res, next) => {
+    try {
+        // Fungsi ini hanya mengambil data user + role dan menempelkannya ke req
+        const user = await User.findByPk(req.userId, {
+            include: [{ model: Role, attributes: ['name'] }]
+        });
+
+        if (!user) {
+            return res.status(404).send({ message: "User tidak ditemukan." });
+        }
+
+        req.user = user; // Tempelkan data user ke object req
+        next(); // Lanjutkan ke controller
+    } catch (error) {
+        console.error("Error di middleware getUserWithRole:", error);
+        res.status(500).send({ message: "Terjadi kesalahan saat mengambil data user." });
     }
 };
 
 const authenticate = {
     verifyToken,
     isDosen,
-    isMahasiswa
+    isMahasiswa,
+    getUserWithRole
 };
 
 module.exports = authenticate;

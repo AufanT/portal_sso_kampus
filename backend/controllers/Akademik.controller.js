@@ -142,7 +142,6 @@ exports.getMahasiswaByKelas = async (req, res) => {
 };
 
 exports.inputNilai = async (req, res) => {
-    // Body request: { enrollment_id: 123, grade: "A" }
     const { enrollment_id, grade } = req.body;
 
     try {
@@ -154,7 +153,6 @@ exports.inputNilai = async (req, res) => {
             return res.status(404).send({ message: 'Data pendaftaran tidak ditemukan.' });
         }
 
-        // Validasi: hanya dosen pengajar yang bisa input nilai
         if (enrollment.Class.lecturer_id !== req.userId) {
             return res.status(403).send({ message: 'Akses ditolak. Anda bukan pengajar kelas ini.' });
         }

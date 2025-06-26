@@ -3,12 +3,10 @@ const { User, Role, Enrollment, Class, Course, Attendance } = db;
 
 exports.getJadwalUser = async (req, res) => {
     try {
-        // HAPUS query User.findByPk, dan langsung ambil data user dari 'req'
         const user = req.user; 
 
         let jadwal;
         if (user.Role.name === 'mahasiswa') {
-            // ... sisa logikanya tetap sama
             jadwal = await Enrollment.findAll({
                 where: { student_id: req.userId },
                 attributes: [],
@@ -19,7 +17,6 @@ exports.getJadwalUser = async (req, res) => {
             });
             jadwal = jadwal.map(e => e.Class);
         } else if (user.Role.name === 'dosen') {
-            // ... sisa logikanya tetap sama
             jadwal = await Class.findAll({
                 where: { lecturer_id: req.userId },
                 include: [{ model: Course, as: 'Course' }]
@@ -38,13 +35,12 @@ exports.lakukanPresensi = async (req, res) => {
     const { class_id, meeting_date, status } = req.body;
 
     try {
-        // Dosen (creator) perlu di-handle secara terpisah, diasumsikan admin yg membuat sesi
         const presensi = await Attendance.create({
             class_id,
             student_id: req.userId,
             meeting_date,
             status,
-            created_by: req.userId // Untuk simple, user sendiri yg create
+            created_by: req.userId 
         });
         res.status(201).send(presensi);
     } catch (error) {
