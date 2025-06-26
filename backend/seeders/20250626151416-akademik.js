@@ -59,7 +59,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    // Hapus data dari Classes dulu, baru Courses karena dependensi
     await queryInterface.bulkDelete('Classes', null, {});
     await queryInterface.bulkDelete('Courses', null, {});
   }
