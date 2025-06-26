@@ -1,9 +1,9 @@
-const { User } = require('../models');
+const { User, Role } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-    const { email, password, full_name, identity_number, role_id } = req.body;
+    const { email, password, full_name, identity_number } = req.body;
 
     try {
         // Cek apakah email sudah terdaftar
@@ -11,35 +11,44 @@ const register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: 'Email already registered' });
         }
+    
+        const mahasiswaRole = await Role.findOne({ where: { name: 'mahasiswa' } });
+        const exixstingIdNumber = await User.findOne ({where : { identity_number}});
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Buat user baru
-    const newUser = await User.create({
-        email,
-        password_hash: hashedPassword,
-        full_name,
-        identity_number,
-        role_id
-    });
-
-    res.status(201).json({
-        message: 'User registered successfully',
-        user: {
-            id: newUser.id,
-            email: newUser.email,
-            full_name: newUser.full_name,
-            identity_number: newUser.identity_number,
-            role_id: newUser.role_id
+        if (exixstingIdNumber) {
+            return res.status(400).json({
+                message: 'identify number already registered'
+            })
         }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Buat user baru
+        const newUser = await User.create({
+            email,
+            password_hash: hashedPassword,
+            full_name,
+            identity_number,
+            role_id: mahasiswaRole.id
         });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: 'Internal server error'
-        });
-    }
+    
+        res.status(201).json({
+            message: 'User registered successfully',
+            user: {
+                id: newUser.id,
+                email: newUser.email,
+                full_name: newUser.full_name,
+                identity_number: newUser.identity_number,
+                role_id: newUser.role_id
+            }
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: 'Internal server error'
+            });
+        }
 }
 
 const login = async (req, res) => {
