@@ -31,7 +31,6 @@ exports.getJadwalUser = async (req, res) => {
 };
 
 exports.lakukanPresensi = async (req, res) => {
-    // Body: { class_id: 1, meeting_date: "2025-06-26", status: "Hadir" }
     const { class_id, meeting_date, status } = req.body;
 
     try {
@@ -40,7 +39,7 @@ exports.lakukanPresensi = async (req, res) => {
             student_id: req.userId,
             meeting_date,
             status,
-            created_by: req.userId 
+            created_by: req.userId
         });
         res.status(201).send(presensi);
     } catch (error) {
