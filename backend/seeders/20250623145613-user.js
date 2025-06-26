@@ -42,6 +42,22 @@ module.exports = {
         updatedAt: new Date()
       },
       {
+        full_name: 'Dr. Indah Permata',
+        email: 'indah.dosen@kampus.ac.id',
+        password_hash: bcrypt.hashSync('passworddosen2', 10),
+        identity_number: 'D002',
+        role_id: dosenRoleId,
+        createdAt: new Date(), updatedAt: new Date()
+      },
+      {
+        full_name: 'Prof. Agus Wijaya',
+        email: 'agus.dosen@kampus.ac.id',
+        password_hash: bcrypt.hashSync('passworddosen3', 10),
+        identity_number: 'D003',
+        role_id: dosenRoleId,
+        createdAt: new Date(), updatedAt: new Date()
+      },
+      {
         full_name: 'Citra Lestari', 
         email: 'citra.mahasiswa@kampus.ac.id', 
         password_hash: hashedPasswordMahasiswa,
