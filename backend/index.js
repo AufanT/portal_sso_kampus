@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
     })
 
 const authRoutes = require('./routes/Auth.routes');
-const akademikRoutes = require('./routes/Akademik.routes'); 
+const akademikRoutes = require('./routes/akademik.routes'); 
 const jadwalRoutes = require('./routes/Jadwal.routes'); 
 const iLearnRoutes = require('./routes/Ilearn.routes');
 const perpustakaanRoutes = require('./routes/Perpustakaan.routes'); 
