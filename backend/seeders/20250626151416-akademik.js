@@ -2,14 +2,13 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    // 1. Buat beberapa mata kuliah (Courses)
     await queryInterface.bulkInsert('Courses', [
       { course_code: 'IF101', name: 'Dasar Pemrograman', credits: 4 },
       { course_code: 'IF102', name: 'Struktur Data', credits: 3 },
-      { course_code: 'UM101', name: 'Bahasa Indonesia', credits: 2 }
+      { course_code: 'UM101', name: 'Bahasa Indonesia', credits: 2 },
+      {course_code: 'IF201', name: 'Basis Data', credits: 3}
     ], {});
 
-    // Ambil semua course yang baru dibuat untuk mendapatkan ID mereka
     const courses = await queryInterface.sequelize.query(
       `SELECT id, course_code FROM Courses;`, { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
@@ -22,11 +21,7 @@ module.exports = {
     );
 
     const dosenIds = dosens.map(d => d.id);
-    if (dosenIds.length < 3) {
-      throw new Error("Butuh minimal 3 data dosen di database untuk menjalankan seeder ini.");
-    }
 
-    // 2. Buat beberapa kelas (Classes) menggunakan ID dari course di atas
     await queryInterface.bulkInsert('Classes', [
       {
         course_id: courseMap['IF101'],
@@ -54,6 +49,15 @@ module.exports = {
         day: 'Jumat',
         start_time: '09:00',
         end_time: '11:00'
+      },
+      {
+        course_id: courseMap['IF201'],
+        lecturer_id: dosenIds[0],
+        academic_year: '2025/2026',
+        semester: 'Genap',
+        day: 'Kamis',
+        start_time: '09:40',
+        end_time: '12:40'
       }
     ], {});
   },
