@@ -32,18 +32,51 @@ exports.getJadwalUser = async (req, res) => {
 
 exports.lakukanPresensi = async (req, res) => {
     const { class_id, meeting_date, status } = req.body;
+    const student_id = req.userId;
 
     try {
+        const enrollment = await Enrollment.findOne({
+            where: {
+                student_id: student_id,
+                class_id: class_id
+            }
+        });
+
+        if (!enrollment) {
+            return res.status(403).send({
+                message: "Akses ditolak. Anda tidak terdaftar di kelas ini."
+            });
+        }
+
+        const kelas = await Class.findByPk(class_id, {
+            attributes: ['lecturer_id'] 
+        });
+
+        if (!kelas) {
+            return res.status(404).send({ 
+                message: "Kelas tidak ditemukan." 
+            });
+        }
+        
+        const responsibleLecturerId = kelas.lecturer_id;
+
         const presensi = await Attendance.create({
             class_id,
-            student_id: req.userId,
+            student_id,
             meeting_date,
             status,
-            created_by: req.userId
+            created_by: responsibleLecturerId 
         });
-        res.status(201).send(presensi);
+
+        res.status(201).send({ 
+            message: "Presensi berhasil dicatat.", 
+            data: presensi 
+        });
+
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        res.status(500).send({ 
+            message: "Terjadi kesalahan saat mencatat presensi." 
+        });
     }
 };
 

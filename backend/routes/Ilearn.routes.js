@@ -1,27 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const authenticate = require("../middlewares/authenticate.js");
+const { verifyToken } = require("../middlewares/authenticate.js");
+const { isDosen } = require("../middlewares/authorize.js");
 const upload = require("../middlewares/upload.js"); 
 const controller = require("../controllers/Ilearn.controller.js");
 
-router.use(function(req, res, next) {
-    res.header(
-        "Access-Control-Allow-Headers",
-        "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-});
-
 router.post(
     "/upload", 
-    [authenticate.verifyToken, authenticate.isDosen, upload.single('file')], 
+    [verifyToken, isDosen, upload.single('file')], 
     controller.uploadMateri
 );
 
 router.get(
     "/materi/:classId", 
-    [authenticate.verifyToken], 
+    [verifyToken], 
     controller.getMateriByClass
 );
 

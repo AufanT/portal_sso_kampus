@@ -3,6 +3,51 @@ const { Op } = require('sequelize');
 const { Enrollment, Class, Course, User } = db;
 
 // --- Logika untuk Mahasiswa ---
+exports.getKelasTersedia = async (req, res) => {
+    const { academic_year, semester } = req.query;
+
+    if (!academic_year || !semester) {
+        return res.status(400).send({ 
+            message: "Parameter 'academic_year' dan 'semester' wajib diisi." 
+        });
+    }
+
+    try {
+        const availableClasses = await Class.findAll({
+            where: {
+                academic_year: academic_year,
+                semester: semester
+            },
+            include: [
+                {
+                    model: Course,
+                    as: 'Course',
+                    attributes: ['course_code', 'name', 'credits']
+                },
+                {
+                    model: User,
+                    as: 'Lecturer',
+                    attributes: ['full_name']
+                }
+            ],
+            order: [
+                [{ model: Course, as: 'Course' }, 'name', 'ASC']
+            ]
+        });
+
+        if (availableClasses.length === 0) {
+            return res.status(404).send({ 
+                message: `Tidak ada kelas yang tersedia untuk periode ${semester} ${academic_year}.` 
+            });
+        }
+
+        res.status(200).send(availableClasses);
+    } catch (error) {
+        console.error("Error saat mengambil kelas tersedia:", error);
+        res.status(500).send({ message: "Terjadi kesalahan pada server." });
+    }
+};
+
 exports.isiKrs = async (req, res) => {
     const { classIds } = req.body;
     const studentId = req.userId;
@@ -108,9 +153,7 @@ exports.getTranskrip = async (req, res) => {
     }
 };
 
-
 // --- Logika untuk Dosen ---
-
 exports.getKelasDosen = async (req, res) => {
     try {
         const kelas = await Class.findAll({

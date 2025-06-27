@@ -10,10 +10,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       book_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'Books', key: 'id' }
       },
       user_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'Users', key: 'id' }
       },
       borrow_date: {
         type: Sequelize.DATEONLY
