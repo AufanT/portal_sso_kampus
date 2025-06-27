@@ -12,7 +12,7 @@ app.use(express.json());
 dotenv.config();
 
 const authRoutes = require('./routes/Auth.routes');
-const akademikRoutes = require('./routes/akademik.routes'); 
+const akademikRoutes = require('./routes/Akademik.routes'); 
 const jadwalRoutes = require('./routes/Jadwal.routes'); 
 const iLearnRoutes = require('./routes/Ilearn.routes');
 const perpustakaanRoutes = require('./routes/Perpustakaan.routes'); 
