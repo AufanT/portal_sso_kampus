@@ -14,7 +14,7 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "portal_sso_kampus",
+    "use_env_variable": "PG_URL",
     "dialect": "postgres",
     "dialectOptions": {
       "ssl": {
