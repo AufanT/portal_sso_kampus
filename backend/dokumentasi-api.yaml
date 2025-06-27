@@ -251,7 +251,7 @@ paths:
                     $ref: '#/components/schemas/User'
         '400':
           description: Email atau password salah.
-  /api/user/profile:
+  /user/profile:
     get:
       tags:
         - User Profile
@@ -282,7 +282,7 @@ paths:
       responses:
         '200':
           description: Profil berhasil diperbarui.
-  /api/akademik/kelas-tersedia:
+  /akademik/kelas-tersedia:
     get:
       tags:
         - Akademik
@@ -317,7 +317,7 @@ paths:
           description: Parameter tidak lengkap.
         '404':
           description: Tidak ada kelas yang ditemukan untuk periode tersebut.
-  /api/akademik/krs:
+  /akademik/krs:
     get:
       tags:
         - Akademik
@@ -354,7 +354,7 @@ paths:
           description: Anda sudah terdaftar di salah satu kelas yang dipilih.
         '404':
           description: Salah satu ID kelas tidak ditemukan.
-  /api/akademik/krs/{enrollmentId}:
+  /akademik/krs/{enrollmentId}:
     delete:
       tags:
         - Akademik
@@ -374,7 +374,7 @@ paths:
           description: Mata kuliah berhasil dihapus.
         '404':
           description: Data pendaftaran tidak ditemukan.
-  /api/akademik/khs:
+  /akademik/khs:
     get:
       tags:
         - Akademik
@@ -399,7 +399,7 @@ paths:
       responses:
         '200':
           description: Berhasil.
-  /api/akademik/transkrip:
+  /akademik/transkrip:
     get:
       tags:
         - Akademik
@@ -410,7 +410,7 @@ paths:
       responses:
         '200':
           description: Berhasil.
-  /api/akademik/kelas-dosen:
+  /akademik/kelas-dosen:
     get:
       tags:
         - Akademik (Dosen)
@@ -421,7 +421,7 @@ paths:
       responses:
         '200':
           description: Berhasil.
-  /api/akademik/nilai/{enrollmentId}:
+  /akademik/nilai/{enrollmentId}:
     put:
       tags:
         - Akademik (Dosen)
@@ -448,7 +448,7 @@ paths:
           description: Akses ditolak, bukan pengajar kelas ini.
         '404':
           description: Data pendaftaran tidak ditemukan.
-  /api/jadwal:
+  /jadwal:
     get:
       tags:
         - Jadwal & Presensi
@@ -459,7 +459,7 @@ paths:
       responses:
         '200':
           description: Berhasil.
-  /api/presensi:
+  /presensi:
     post:
       tags:
         - Jadwal & Presensi
@@ -478,7 +478,7 @@ paths:
           description: Presensi berhasil dicatat.
         '403':
           description: Akses ditolak, mahasiswa tidak terdaftar di kelas ini.
-  /api/ilearn/upload:
+  /ilearn/upload:
     post:
       tags:
         - iLearn
@@ -505,7 +505,7 @@ paths:
       responses:
         '201':
           description: Materi berhasil diunggah.
-  /api/ilearn/materi/{classId}:
+  /ilearn/materi/{classId}:
     get:
       tags:
         - iLearn
@@ -522,7 +522,7 @@ paths:
       responses:
         '200':
           description: Berhasil.
-  /api/perpustakaan/books:
+  /perpustakaan/books:
     get:
       tags:
         - Perpustakaan
@@ -539,7 +539,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
-  /api/perpustakaan/borrow:
+  /perpustakaan/borrow:
     post:
       tags:
         - Perpustakaan
@@ -560,7 +560,7 @@ paths:
           description: Buku sudah pernah dipinjam.
         '404':
           description: Stok buku habis.
-  /api/perpustakaan/history:
+  /perpustakaan/history:
     get:
       tags:
         - Perpustakaan
@@ -577,7 +577,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BookBorrow'
-  /api/ukt/my-bills:
+  /ukt/my-bills:
     get:
       tags:
         - Pembayaran UKT
