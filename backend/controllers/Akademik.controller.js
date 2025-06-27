@@ -85,6 +85,38 @@ exports.isiKrs = async (req, res) => {
     }
 };
 
+exports.hapusKelasKrs = async (req, res) => {
+    // Ambil ID pendaftaran (enrollment) dari parameter URL, contoh: /api/akademik/krs/25
+    const { enrollmentId } = req.params;
+    // Ambil ID mahasiswa yang sedang login dari token
+    const studentId = req.userId;
+
+    try {
+        // LANGKAH 1: Cari data pendaftaran yang spesifik
+        const enrollment = await Enrollment.findOne({
+            where: {
+                id: enrollmentId,
+                student_id: studentId 
+            }
+        });
+
+        if (!enrollment) {
+            return res.status(404).send({ 
+                message: "Data pendaftaran kelas tidak ditemukan atau Anda tidak memiliki akses untuk menghapusnya." 
+            });
+        }
+
+        // LANGKAH 2: Jika ditemukan, hapus data tersebut dari database
+        await enrollment.destroy();
+
+        res.status(200).send({ message: "Mata kuliah berhasil dihapus dari KRS." });
+
+    } catch (error) {
+        console.error("Error saat menghapus kelas dari KRS:", error);
+        res.status(500).send({ message: "Terjadi kesalahan pada server." });
+    }
+};
+
 exports.getKrs = async (req, res) => {
     try {
         const krs = await Enrollment.findAll({
@@ -204,6 +236,37 @@ exports.inputNilai = async (req, res) => {
 
         res.status(200).send({ message: 'Nilai berhasil diupdate.' });
 
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+};
+
+exports.updateNilai = async (req, res) => {
+    // Ambil ID pendaftaran dari parameter URL
+    const { enrollmentId } = req.params;
+    // Ambil nilai baru dari body
+    const { grade } = req.body;
+    // Ambil ID dosen yang login dari token
+    const lecturerId = req.userId;
+
+    try {
+        const enrollment = await Enrollment.findByPk(enrollmentId, {
+            include: [{ model: Class, as: 'Class', attributes: ['lecturer_id'] }]
+        });
+
+        if (!enrollment) {
+            return res.status(404).send({ message: "Data pendaftaran tidak ditemukan." });
+        }
+
+        // Validasi: hanya dosen pengajar yang bisa mengubah nilai
+        if (enrollment.Class.lecturer_id !== lecturerId) {
+            return res.status(403).send({ message: "Akses ditolak. Anda bukan pengajar kelas ini." });
+        }
+
+        // Update nilai
+        await enrollment.update({ grade: grade });
+
+        res.status(200).send({ message: "Nilai berhasil diperbarui." });
     } catch (error) {
         res.status(500).send({ message: error.message });
     }

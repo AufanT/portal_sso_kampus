@@ -33,6 +33,7 @@ module.exports = {
         });
       });
 
+      await queryInterface.bulkInsert('TuitionBills', billsToInsert, {});
     }
   },
 

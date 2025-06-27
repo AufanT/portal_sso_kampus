@@ -13,7 +13,8 @@ const akademikRoutes = require('./routes/akademik.routes');
 const jadwalRoutes = require('./routes/Jadwal.routes'); 
 const iLearnRoutes = require('./routes/Ilearn.routes');
 const perpustakaanRoutes = require('./routes/Perpustakaan.routes'); 
-const uktRoutes = require('./routes/Ukt.routes');     
+const uktRoutes = require('./routes/Ukt.routes');   
+const userRoutes = require('./routes/User.routes');  
 
 
 app.use('/auth', authRoutes);
@@ -22,6 +23,7 @@ app.use('/jadwal', jadwalRoutes);
 app.use('/ilearn', iLearnRoutes);
 app.use('/perpustakaan', perpustakaanRoutes);
 app.use('/ukt', uktRoutes);   
+app.use('/user', userRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

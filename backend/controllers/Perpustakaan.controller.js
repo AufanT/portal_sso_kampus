@@ -18,36 +18,60 @@ exports.getAllBooks = async (req, res) => {
 
 // POST: Meminjam buku
 exports.borrowBook = async (req, res) => {
-    // Diasumsikan frontend mengirim { book_id: 123 }
     const { book_id } = req.body;
-    const user_id = req.userId; // Dari token
+    const user_id = req.userId;
 
     try {
+        // === LANGKAH 1: Validasi Peminjaman Aktif (Logika Baru) ===
+        const existingLoan = await BookBorrow.findOne({
+            where: {
+                user_id: user_id,
+                book_id: book_id,
+                status: 'Dipinjam' // Cek hanya untuk buku yang statusnya masih 'Dipinjam'
+            }
+        });
+
+        // Jika sudah ada data peminjaman aktif untuk buku ini oleh user ini, tolak.
+        if (existingLoan) {
+            return res.status(400).send({
+                message: "Anda sudah meminjam buku ini dan belum mengembalikannya."
+            });
+        }
+
+        // === LANGKAH 2: Validasi Stok Buku (Logika Lama yang Tetap Penting) ===
         const book = await Book.findByPk(book_id);
         if (!book || book.stock < 1) {
             return res.status(404).send({ message: "Buku tidak tersedia atau stok habis." });
         }
 
-        // Kurangi stok buku
-        await book.decrement('stock');
+        // === LANGKAH 3: Proses Peminjaman (Jika semua validasi lolos) ===
+        
+        // Gunakan transaksi untuk memastikan kedua operasi (update stok & insert peminjaman) berhasil atau gagal bersamaan
+        const result = await db.sequelize.transaction(async (t) => {
+            // Kurangi stok buku
+            await book.decrement('stock', { transaction: t });
 
-        // Catat peminjaman
-        const borrowDate = new Date();
-        const dueDate = new Date();
-        dueDate.setDate(borrowDate.getDate() + 7); // Batas waktu peminjaman 7 hari
+            // Catat peminjaman
+            const borrowDate = new Date();
+            const dueDate = new Date();
+            dueDate.setDate(borrowDate.getDate() + 7); // Batas waktu 7 hari
 
-        const newBorrow = await BookBorrow.create({
-            book_id,
-            user_id,
-            borrow_date: borrowDate,
-            due_date: dueDate,
-            status: 'Dipinjam'
+            const newBorrow = await BookBorrow.create({
+                book_id,
+                user_id,
+                borrow_date: borrowDate,
+                due_date: dueDate,
+                status: 'Dipinjam'
+            }, { transaction: t });
+
+            return newBorrow;
         });
 
-        res.status(201).send({ message: "Buku berhasil dipinjam.", data: newBorrow });
+        res.status(201).send({ message: "Buku berhasil dipinjam.", data: result });
 
     } catch (error) {
-        res.status(500).send({ message: error.message });
+        console.error("Error saat meminjam buku:", error);
+        res.status(500).send({ message: "Terjadi kesalahan pada server." });
     }
 };
 
