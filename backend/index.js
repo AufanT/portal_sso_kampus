@@ -11,6 +11,10 @@ app.use(cors());
 app.use(express.json());
 dotenv.config();
 
+app.get('/', (req, res) => {
+        res.send('Welcome to API Portal SSO Kampus')
+    })
+
 const authRoutes = require('./routes/Auth.routes');
 const akademikRoutes = require('./routes/Akademik.routes'); 
 const jadwalRoutes = require('./routes/Jadwal.routes'); 
