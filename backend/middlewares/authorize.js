@@ -7,7 +7,7 @@ exports.isDosen = async (req, res, next) => {
         const user = await User.findByPk(req.userId, { include: [Role] });
 
         if (user && user.Role.name === 'dosen') {
-            req.user = user; // Kita tetap menempelkan data user untuk efisiensi
+            req.user = user;
             next();
             return;
         }
