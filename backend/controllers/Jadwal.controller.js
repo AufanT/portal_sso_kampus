@@ -93,6 +93,7 @@ exports.lihatPresensi = async (req, res) => {
             order: [['meeting_date', 'DESC']]
         });
         res.status(200).send(rekap);
+        
     } catch (error) {
         res.status(500).send({ message: error.message });
     }
