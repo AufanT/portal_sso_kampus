@@ -1,0 +1,596 @@
+openapi: 3.0.0
+info:
+  title: API Portal SSO Kampus
+  version: 1.0.0
+  description: Dokumentasi API lengkap untuk sistem informasi akademik Portal SSO Kampus.
+servers:
+  - url: http://localhost:3000
+    description: Server Development Lokal
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    # SKEMA UNTUK REQUEST BODY
+    UserRegister:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Budi Sanjaya
+        email:
+          type: string
+          format: email
+          example: budi.sanjaya@kampus.ac.id
+        password:
+          type: string
+          format: password
+          example: rahasia123
+        identity_number:
+          type: string
+          example: "M004"
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: citra.mahasiswa@kampus.ac.id
+        password:
+          type: string
+          format: password
+          example: passwordmahasiswa
+    ProfileUpdate:
+      type: object
+      properties:
+        full_name:
+          type: string
+          example: Citra Lestari Wijaya
+        identity_number:
+          type: string
+          example: M001-UPDATED
+    KrsInput:
+      type: object
+      properties:
+        classIds:
+          type: array
+          items:
+            type: integer
+          description: Array dari ID kelas yang akan diambil.
+          example: [1, 2]
+    NilaiInput:
+      type: object
+      properties:
+        grade:
+          type: string
+          description: Nilai akhir mahasiswa (A, B, C, D, E).
+          example: "A"
+    PresensiInput:
+      type: object
+      properties:
+        class_id:
+          type: integer
+          example: 1
+        meeting_date:
+          type: string
+          format: date
+          example: "2025-06-28"
+        status:
+          type: string
+          enum: [Hadir, Sakit, Izin, Alpa]
+          example: "Hadir"
+    BorrowInput:
+      type: object
+      properties:
+        book_id:
+          type: integer
+          example: 1
+          
+    # SKEMA UNTUK DATA MODEL
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        full_name:
+          type: string
+        email:
+          type: string
+          format: email
+        identity_number:
+          type: string
+        role_id:
+          type: integer
+        Role:
+          type: object
+          properties:
+            name:
+              type: string
+              example: mahasiswa
+    KelasTersedia:
+      type: object
+      properties:
+        id:
+          type: integer
+        academic_year:
+          type: string
+        semester:
+          type: string
+        day:
+          type: string
+        start_time:
+          type: string
+        end_time:
+          type: string
+        Course:
+          type: object
+          properties:
+            course_code:
+              type: string
+            name:
+              type: string
+            credits:
+              type: integer
+        Lecturer:
+          type: object
+          properties:
+            full_name:
+              type: string
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: integer
+        grade:
+          type: string
+        Class:
+          $ref: '#/components/schemas/KelasTersedia'
+    Book:
+      type: object
+      properties:
+        id: 
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        stock:
+          type: integer
+    BookBorrow:
+      type: object
+      properties:
+        id:
+          type: integer
+        book_id:
+          type: integer
+        user_id:
+          type: integer
+        borrow_date:
+          type: string
+          format: date
+        due_date:
+          type: string
+          format: date
+        return_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [Dipinjam, Kembali, Terlambat]
+    TuitionBill:
+      type: object
+      properties:
+        id:
+          type: integer
+        student_id:
+          type: integer
+        billing_period:
+          type: string
+        amount:
+          type: number
+          format: double
+        due_date:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [Lunas, Belum Lunas]
+        payment_date:
+          type: string
+          format: date-time
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Registrasi User Baru
+      description: Mendaftarkan user baru dengan peran default sebagai Mahasiswa.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+      responses:
+        '201':
+          description: Registrasi berhasil.
+        '400':
+          description: Email atau NIM/NIP sudah terdaftar.
+        '500':
+          description: Internal Server Error.
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login User
+      description: Mengautentikasi user dan mengembalikan token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: Login berhasil.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Email atau password salah.
+  /user/profile:
+    get:
+      tags:
+        - User Profile
+      summary: Get User Profile
+      description: Mengambil data profil dari user yang sedang login.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Profil berhasil diambil.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+        - User Profile
+      summary: Update User Profile
+      description: Memperbarui data profil (nama & NIM/NIP) dari user yang sedang login.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdate'
+      responses:
+        '200':
+          description: Profil berhasil diperbarui.
+  /akademik/kelas-tersedia:
+    get:
+      tags:
+        - Akademik
+      summary: Lihat Daftar Kelas Tersedia (Menu KRS)
+      description: Mengambil daftar semua kelas yang ditawarkan pada periode tertentu. Membutuhkan peran Mahasiswa.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: academic_year
+          in: query
+          required: true
+          schema:
+            type: string
+          example: 2024/2025
+        - name: semester
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Ganjil, Genap]
+          example: Ganjil
+      responses:
+        '200':
+          description: Daftar kelas berhasil diambil.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KelasTersedia'
+        '400':
+          description: Parameter tidak lengkap.
+        '404':
+          description: Tidak ada kelas yang ditemukan untuk periode tersebut.
+  /akademik/krs:
+    get:
+      tags:
+        - Akademik
+      summary: Lihat KRS Mahasiswa
+      description: Mengambil daftar kelas yang sudah diambil oleh mahasiswa yang sedang login.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Enrollment'
+    post:
+      tags:
+        - Akademik
+      summary: Mengisi atau Menambah KRS
+      description: Mahasiswa mengirimkan daftar ID kelas yang ingin diambil.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KrsInput'
+      responses:
+        '201':
+          description: KRS berhasil disimpan.
+        '400':
+          description: Anda sudah terdaftar di salah satu kelas yang dipilih.
+        '404':
+          description: Salah satu ID kelas tidak ditemukan.
+  /akademik/krs/{enrollmentId}:
+    delete:
+      tags:
+        - Akademik
+      summary: Membatalkan/Menghapus Kelas dari KRS
+      description: Mahasiswa membatalkan satu mata kuliah dari KRS-nya.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: enrollmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID dari data pendaftaran (enrollment) yang ingin dihapus.
+      responses:
+        '200':
+          description: Mata kuliah berhasil dihapus.
+        '404':
+          description: Data pendaftaran tidak ditemukan.
+  /akademik/khs:
+    get:
+      tags:
+        - Akademik
+      summary: Lihat KHS (Kartu Hasil Studi)
+      description: Mengambil KHS mahasiswa per semester.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: academic_year
+          in: query
+          required: true
+          schema:
+            type: string
+          example: 2024/2025
+        - name: semester
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Ganjil, Genap]
+          example: Ganjil
+      responses:
+        '200':
+          description: Berhasil.
+  /akademik/transkrip:
+    get:
+      tags:
+        - Akademik
+      summary: Lihat Transkrip Nilai
+      description: Mengambil seluruh riwayat nilai mahasiswa yang sudah keluar.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+  /akademik/kelas-dosen:
+    get:
+      tags:
+        - Akademik (Dosen)
+      summary: Lihat Kelas yang Diajar Dosen
+      description: Dosen mengambil daftar semua kelas yang menjadi tanggung jawabnya.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+  /akademik/nilai/{enrollmentId}:
+    put:
+      tags:
+        - Akademik (Dosen)
+      summary: Update Nilai Mahasiswa
+      description: Dosen mengubah atau memperbaiki nilai mahasiswa.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: enrollmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NilaiInput'
+      responses:
+        '200':
+          description: Nilai berhasil diperbarui.
+        '403':
+          description: Akses ditolak, bukan pengajar kelas ini.
+        '404':
+          description: Data pendaftaran tidak ditemukan.
+  /jadwal:
+    get:
+      tags:
+        - Jadwal & Presensi
+      summary: Lihat Jadwal
+      description: Bisa diakses oleh Mahasiswa (melihat jadwal kuliah) dan Dosen (melihat jadwal mengajar).
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+  /presensi:
+    post:
+      tags:
+        - Jadwal & Presensi
+      summary: Lakukan Presensi
+      description: Mahasiswa melakukan presensi untuk sebuah kelas pada tanggal tertentu.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PresensiInput'
+      responses:
+        '201':
+          description: Presensi berhasil dicatat.
+        '403':
+          description: Akses ditolak, mahasiswa tidak terdaftar di kelas ini.
+  /ilearn/upload:
+    post:
+      tags:
+        - iLearn
+      summary: Upload Materi Pembelajaran
+      description: Dosen mengunggah file materi baru (PDF, PPT, dll). Request harus dalam format multipart/form-data.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                class_id:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Materi berhasil diunggah.
+  /ilearn/materi/{classId}:
+    get:
+      tags:
+        - iLearn
+      summary: Lihat Materi per Kelas
+      description: Mengambil daftar semua materi yang tersedia untuk ID kelas tertentu.
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil.
+  /perpustakaan/books:
+    get:
+      tags:
+        - Perpustakaan
+      summary: Lihat Semua Buku Tersedia
+      description: Menampilkan daftar semua buku yang stoknya lebih dari 0.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+  /perpustakaan/borrow:
+    post:
+      tags:
+        - Perpustakaan
+      summary: Pinjam Buku
+      description: Mahasiswa atau Dosen meminjam satu buku.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowInput'
+      responses:
+        '201':
+          description: Buku berhasil dipinjam.
+        '400':
+          description: Buku sudah pernah dipinjam.
+        '404':
+          description: Stok buku habis.
+  /perpustakaan/history:
+    get:
+      tags:
+        - Perpustakaan
+      summary: Lihat Riwayat Peminjaman
+      description: Menampilkan riwayat peminjaman buku dari user yang sedang login.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookBorrow'
+  /ukt/my-bills:
+    get:
+      tags:
+        - Pembayaran UKT
+      summary: Lihat Tagihan UKT Saya
+      description: Mahasiswa melihat semua riwayat tagihan UKT miliknya.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Berhasil.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TuitionBill'
