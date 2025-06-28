@@ -3,20 +3,41 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Courses', [
-      { course_code: 'IF101', name: 'Dasar Pemrograman', credits: 4 },
-      { course_code: 'IF102', name: 'Struktur Data', credits: 3 },
-      { course_code: 'UM101', name: 'Bahasa Indonesia', credits: 2 },
-      {course_code: 'IF201', name: 'Basis Data', credits: 3}
+      { course_code: 'IF101', 
+        name: 'Dasar Pemrograman', 
+        credits: 4,
+        createdAt: new Date(),
+        updatedAt: new Date()
+        
+      },
+      { course_code: 'IF102', 
+        name: 'Struktur Data', 
+        credits: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      { course_code: 'UM101', 
+        name: 'Bahasa Indonesia', 
+        credits: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {course_code: 'IF201', 
+        name: 'Basis Data', 
+        credits: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
     ], {});
 
     const courses = await queryInterface.sequelize.query(
-      `SELECT id, course_code FROM Courses;`, { type: queryInterface.sequelize.QueryTypes.SELECT }
+      `SELECT id, course_code FROM "Courses";`, { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
     const courseMap = {};
     courses.forEach(course => { courseMap[course.course_code] = course.id });
 
     const dosens = await queryInterface.sequelize.query(
-      `SELECT Users.id FROM Users JOIN Roles ON Users.role_id = Roles.id WHERE Roles.name = 'dosen'`,
+      `SELECT "Users".id FROM "Users" JOIN "Roles" ON "Users".role_id = "Roles".id WHERE "Roles".name = 'dosen'`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
 
@@ -30,7 +51,9 @@ module.exports = {
         semester: 'Ganjil',
         day: 'Senin',
         start_time: '08:00',
-        end_time: '10:00'
+        end_time: '10:00',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         course_id: courseMap['IF102'],
@@ -39,7 +62,9 @@ module.exports = {
         semester: 'Ganjil',
         day: 'Rabu',
         start_time: '13:00',
-        end_time: '15:00'
+        end_time: '15:00',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         course_id: courseMap['UM101'],
@@ -48,7 +73,9 @@ module.exports = {
         semester: 'Ganjil',
         day: 'Jumat',
         start_time: '09:00',
-        end_time: '11:00'
+        end_time: '11:00',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         course_id: courseMap['IF201'],
@@ -57,7 +84,9 @@ module.exports = {
         semester: 'Genap',
         day: 'Kamis',
         start_time: '09:40',
-        end_time: '12:40'
+        end_time: '12:40',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ], {});
   },

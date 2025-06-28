@@ -14,13 +14,12 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL",
-    "dialect": "postgres",
-    "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      }
-    }
+    "username": "postgres",
+    "password": "UfrtQEpFKBdEvBkqaFPtlkQTSzeuRfeX",
+    "database": "railway",
+    "host": "shortline.proxy.rlwy.net",
+    "port": 49130,
+    "dialect": "postgres"
   }
+
 }

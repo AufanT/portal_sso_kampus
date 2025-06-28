@@ -32,11 +32,11 @@ module.exports = {
 
     // 2. Ambil ID user mahasiswa dan buku yang baru dibuat untuk membuat data peminjaman
     const users = await queryInterface.sequelize.query(
-      `SELECT id FROM Users WHERE role_id = (SELECT id FROM Roles WHERE name = 'mahasiswa' LIMIT 1)`,
+      `SELECT id FROM "Users" WHERE role_id = (SELECT id FROM "Roles" WHERE name = 'mahasiswa' LIMIT 1)`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
     const books = await queryInterface.sequelize.query(
-      `SELECT id FROM Books`,
+      `SELECT id FROM "Books"`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
 

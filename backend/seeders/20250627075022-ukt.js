@@ -3,7 +3,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     const users = await queryInterface.sequelize.query(
-      `SELECT id FROM Users WHERE role_id = (SELECT id FROM Roles WHERE name = 'mahasiswa' LIMIT 1)`,
+      `SELECT id FROM "Users" WHERE role_id = (SELECT id FROM "Roles" WHERE name = 'mahasiswa' LIMIT 1)`,
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     );
 
