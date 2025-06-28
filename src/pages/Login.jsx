@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import '../style/Login.css';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -23,7 +24,6 @@ const Login = () => {
         setLoading(true);
 
         try {
-            // Simulasi API call 
             if (formData.email === 'admin@test.com' && formData.password ===
                 'password') {
                 const userData = {
@@ -34,7 +34,7 @@ const Login = () => {
                 login(userData, token);
                 navigate('/dashboard');
             } else {
-            alert('Email atau password salah!');
+                alert('Email atau password salah!');
             }
         } catch (error) {
             console.error('Login error:', error);
@@ -45,8 +45,8 @@ const Login = () => {
 
     return (
         <div className="login-container">
+            <h2 className='login-title'>Login</h2>
             <div className="login-form">
-                <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Email:</label>
@@ -70,7 +70,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <button type="submit" disabled={loading}>
+                    <button className='tombol' type="submit" disabled={loading}>
                         {loading ? 'Loading...' : 'Login'}
                     </button>
                 </form>

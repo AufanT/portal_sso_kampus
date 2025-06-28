@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import "../style/ELearning.css"
 
 const ELearning = () => {
   const navigate = useNavigate();
@@ -15,11 +16,13 @@ const ELearning = () => {
           <li>
             <Link to="/pengantar-akuntansi" className="class">
               <div className="class-tittle">Pengantar Akuntansi</div>
+              <p>Drs. Jonhar, M.si., Ak.</p>
             </Link>
           </li>
           <li>
             <Link to="/pengantar-bisnis" className="class">
               <div className="class-tittle">Pengantar Bisnis</div>
+              <p>Dr. Rida Rahim, SE., ME.</p>
             </Link>
           </li>
         </ul>

@@ -1,0 +1,63 @@
+.page {
+  padding: 40px 24px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8fbff;
+  color: #000;
+  position: relative;
+  margin: 2rem;
+}
+
+.page h2 {
+  font-size: 2rem;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+.page p {
+  font-size: 1rem;
+  margin-bottom: 32px;
+  color: #333;
+}
+
+.course-list h3 {
+  font-size: 1.5rem;
+  color: #09205e;
+  margin-bottom: 16px;
+}
+
+.course-list ul {
+  list-style: none;
+  display:  grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.class {
+  display: block;
+  background-color: #e0ecff;
+  border: 0.3px solid #1c222b;
+  padding: 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #111827;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.class:hover {
+  background-color: #d1e0ff;
+  transform: translateY(-2px);
+}
+
+.class-tittle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #1e3a8a;
+}
+
+.class p {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #374151;
+}

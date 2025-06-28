@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../style/Register.css';
+
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -43,8 +45,8 @@ const Register = () => {
 
     return (
         <div className="register-container">
+            <h2 className='register-title'>Register</h2>
             <div className="register-form">
-                <h2>Register</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label>Nama:</label>
@@ -90,7 +92,7 @@ const Register = () => {
                         />
                     </div>
 
-                    <button type="submit" disabled={loading}>
+                    <button className='tombol' type="submit" disabled={loading}>
                         {loading ? 'Loading...' : 'Register'}
                     </button>
                 </form>

@@ -1,0 +1,89 @@
+/* Background dan layout utama */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    flex-direction: column;
+    align-items: center;
+    /* ini yang penting biar semua ke tengah */
+    margin-top: 2rem;
+}
+
+.register-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #000;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Box form */
+.register-form {
+    background: #fffdfd;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 450px;
+    min-width: none;
+    text-align: center;
+}
+
+/* Title */
+.register-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #000;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Form input */
+.form-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 1rem;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Tombol */
+.tombol {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #d4d4d4;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px #999;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tombol:hover {
+    background-color: #bbbbbb;
+}
+
+.register-form a {
+    color: #000000;
+    text-decoration: underline;
+    font-style: italic;
+}
+
+.register-form a:hover {
+    text-decoration: underline;
+}

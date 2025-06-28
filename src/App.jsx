@@ -13,6 +13,7 @@ import InformasiAkademik from './pages/InformasiAkademik';
 import JadwalKuliah from './pages/JadwalKuliah';
 import PembayaranUKT from './pages/PembayaranUKT.jsx';
 import PerpustakaanOnline from './pages/PerpustakaanOnline';
+import PengantarAkuntansi from "./pages/PengantarAkuntansi.jsx";
 import NotFound from './pages/NotFound';
 import './App.css';
 
@@ -69,12 +70,18 @@ function App() {
                             </ProtectedRoute>
                         } />
 
+                        <Route path="/pengantar-akuntansi" element={
+                            <ProtectedRoute>
+                                <PengantarAkuntansi />
+                            </ProtectedRoute>
+                        } />
+
                         <Route path="*" element={<NotFound />} />
 
                     </Routes>
                 </main>
             </div>
-        </AuthProvider>
+        </AuthProvider >
     );
 }
 

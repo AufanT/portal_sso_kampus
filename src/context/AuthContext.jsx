@@ -26,11 +26,19 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('token');
     };
 
+    const updatePhoto = (photoUrl) => {
+        setUser((prevUser) => ({
+            ...prevUser,
+            photo: photoUrl
+        }));
+    };
+
     const value = {
         user,
         token,
         login,
         logout,
+        updatePhoto,
         isAuthenticated: !!token
     };
 

@@ -1,0 +1,38 @@
+.container {
+  padding: 20px;
+  font-family: Helvetica, sans-serif, sans-serif;
+}
+
+.title {
+  color: #000000; /* hijau tua */
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 1.7rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.table-akademik {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table-akademik th,
+.table-akademik td {
+  border: 1px solid #a5d6a7;
+  padding: 7px 12px;
+}
+
+.table-akademik thead {
+  background-color: #4B3935; /* hijau tua */
+  color: white;
+}
+
+.table-akademik .even {
+  background-color: #f1f8e9; /* hijau muda */
+}
+
+.table-akademik .odd {
+  background-color: #ffffff;
+}

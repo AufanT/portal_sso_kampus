@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.profile-container {
+  text-align: center;
+  padding: 5px;
+  font-family: "Poppins", "Plus Jakarta Sans";
+}
+
+.profile-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: black;
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem; /* atau sesuaikan nilainya */
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;      /* Bikin gambar bulat */
+  object-fit: cover;     /* Biar gambar tidak gepeng */
+  border: 4px solid #4c6baf; /* Bingkai hijau (atau ganti warna sesukamu) */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opsional: bayangan biar cakep */
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.profile-card {
+  background-color: #FFFDF5;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  max-height: 500px;
+  min-height: 350px;
+  max-width: 450px;
+  min-width: 325px;
+  margin: auto;
+}
+.profile-card h2 {
+  color: var(--color-text);
+}
+
+.profile-card p {
+  color: var(--color-subtext);
+}
+
+.custom-file-label {
+  padding: 0.15rem 1.2rem;
+  background-color: #a4a4a4;
+  margin-top: 20px;
+  border-radius: 20px;
+  border: 0.5px solid black;
+}
+
+.custom-file-label:hover {
+  background-color: #3f6593;
+}
+

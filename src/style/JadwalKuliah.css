@@ -1,0 +1,55 @@
+/* Container utama */
+.jadwal-container {
+  padding: 32px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.jadwal-container h1 {
+  font-size: 32px;
+  color: #000000; /* Hijau tua */
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.jadwal-card {
+  background: white;
+  border: 1px solid #c8e6c9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jadwal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.jadwal-card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #08194a;
+  text-align: center;
+}
+
+.jadwal-card p {
+  margin: 4px 0;
+  color: #333;
+}
+
+.jadwal-item {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.kosong {
+  color: #d32f2f;
+  font-style: italic;
+}

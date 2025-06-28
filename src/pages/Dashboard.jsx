@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import "../style/Dashboard.css";
 
 const Dashboard = () => {
     const { user } = useAuth();
@@ -12,27 +13,27 @@ const Dashboard = () => {
       <div className="dashboard-container">
         <Link to="/informasi-akademik" className="card">
           <div className="card-title">Informasi Akademik</div>
-          <div>Informasi Portal Mahasiswa dan Dosen</div>
+          <div className='card-subtitle'>Informasi Portal Mahasiswa dan Dosen</div>
         </Link>
 
         <Link to="/jadwal-kuliah" className="card">
           <div className="card-title">Jadwal Kuliah</div>
-          <div>Jadwal Perkuliahan Mahasiswa</div>
+          <div className='card-subtitle'>Jadwal Perkuliahan Mahasiswa</div>
         </Link>
 
         <Link to="/e-learning" className="card">
           <div className="card-title">E-learning</div>
-          <div>Sistem Informasi E-learning</div>
+          <div className='card-subtitle'>Sistem Informasi E-learning</div>
         </Link>
 
         <Link to="/perpustakaan" className="card">
           <div className="card-title">Perpustakaan Online</div>
-          <div>Sistem Informasi Perpustakaan</div>
+          <div className='card-subtitle'>Sistem Informasi Perpustakaan</div>
         </Link>
 
           <Link to="/pembayaran" className="card">
           <div className="card-title">Pembayaran UKT</div>
-          <div>Informasi Pembayaran Uang Kuliah Tunggal</div>
+          <div className='card-subtitle'>Informasi Pembayaran Uang Kuliah Tunggal</div>
         </Link>
       </div>
     </div>
