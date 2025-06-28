@@ -27,6 +27,8 @@ const isMahasiswa = async (req, res, next) => {
     try {
         const user = await User.findByPk(req.userId, { include: [Role] });
 
+        console.log("DATA USER DARI MIDDLEWARE:", JSON.stringify(user, null, 2));
+
         if (!user || !user.Role) {
             return res.status(403).send({ message: 'Akses ditolak! Data peran tidak valid.' });
         }
