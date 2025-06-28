@@ -4,6 +4,8 @@ info:
   version: 1.0.0
   description: Dokumentasi API lengkap untuk sistem informasi akademik Portal SSO Kampus.
 servers:
+  - url: https://portalssokampus-production.up.railway.app
+    description: Production Server
   - url: http://localhost:3000
     description: Server Development Lokal
 components:
